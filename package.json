@@ -1,0 +1,19 @@
+{
+  "name": "koaisblog",
+  "version": "0.0.1",
+  "description": "基于Koa2+Node+MySql 写的一款博客",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gmw-zjw/KoaIsBlog.git"
+  },
+  "author": "执念",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gmw-zjw/KoaIsBlog/issues"
+  },
+  "homepage": "https://github.com/gmw-zjw/KoaIsBlog#readme"
+}
