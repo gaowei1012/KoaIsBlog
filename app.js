@@ -43,6 +43,8 @@ app.use(bodyParser({
     formLimit: 'lmb'
 }))
 
+// 路由配置
+app.use(require('./routes/signup.js').routes());
 
 app.listen(3000, () => {
     console.log('SUCCESS')
