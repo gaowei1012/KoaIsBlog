@@ -44,6 +44,7 @@ app.use(bodyParser({
 }))
 
 // 路由配置
+app.use(require('./routes/signin.js').routes());
 app.use(require('./routes/signup.js').routes());
 
 app.listen(3000, () => {
