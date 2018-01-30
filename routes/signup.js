@@ -15,6 +15,59 @@ router.get('/signup', async (ctx, next) => {
     await ctx.render('signup', {
         session: ctx.session
     })
+});
+
+
+// post 注册
+router.post('/signup', async (ctx, next) => {
+    let user = {
+        name: ctx.request.body.name,
+        pass: ctx.request.body.password,
+        repeatpass: ctx.request.body.repeatpass,
+        avator: ctx.request.body.avator
+    }
+
+    await userModel.findDataByName(user.name) 
+        .then(async (result) => {
+            console.log(result);
+            if (result.lenght) {
+                try {
+                    throw Error('用户已经存在')
+                } catch (error) {
+                    console.log(error)
+                }
+                // 用户已经存在
+                ctx.body = {
+                    data: 1
+                }
+            } else if (user.pass !== user.repeatpass || user.pass === '') {
+                ctx.body = {
+                    data: 2
+                }
+            } else {
+                let base64Data = user.avator.replace(/^data:image\/\w+;base64,/, "");
+                let dataBuffer = new Buffer(base64Data, 'base64');
+                let getName = Number(Math.random().toString().substr(3).toString(36) + Date.now());
+
+                // 头像上传
+                await fs.writeFile('./public/images' + getName + '.png',  dataBuffer, err => {
+                    if (err) {
+                        throw err;
+                    }
+                    console.log('头像上传成功！')
+                });
+
+                // 插入数据库
+                await userModel.insertData([user.name, md5(user.pass), getName, moment().format('YYYY-MM-DD HH:mm:ss')])
+                    .then(res => {
+                        console.log('注册成功', res);
+                        ctx.body = {
+                            data: 3
+                        }
+                    })
+
+            }
+        })
 })
 
 module.exports = router
