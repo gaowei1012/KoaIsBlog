@@ -47,6 +47,6 @@ app.use(bodyParser({
 app.use(require('./routes/signin.js').routes());
 app.use(require('./routes/signup.js').routes());
 
-app.listen(3000, () => {
+app.listen(config.port, () => {
     console.log('SUCCESS')
 })
