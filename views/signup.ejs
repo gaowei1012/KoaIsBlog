@@ -23,46 +23,43 @@
 		</form>
 	</div>
 	<script>
-		$(window).keyup((e) => {
+		$(window).keyup(function (e) {
+			//console.log(e.keyCode)
 			if (e.keyCode == 13) {
-				$('.subnit').click()
+				$('.submit').click()
 			}
 		})
-		$('#avator').change(() => {
-			if (this.files.lenght != 0) {
+		$('#avator').change(function(){
+			if (this.files.length != 0) {
 				var file = this.files[0],
 					reader = new FileReader();
 				if (!reader) {
 					this.value = '';
 					return;
-				}
-
-				console.log(file.size);
+				};
+				console.log(file.size)
 				if (file.size >= 1024 * 1024 / 2) {
-					fade('请上传小于512KB的图片')
-					return;
+					fade("请上传小于512kb的图片!")
+					return 
 				}
-
-				reader.onload = (e) => {
+				reader.onload = function (e) {
 					this.value = '';
 					$('form .preview').attr('src', e.target.result)
 					$('form .preview').fadeIn()
 					$('#avatorVal').val(e.target.result)
 				};
-
 				reader.readAsDataURL(file);
-			}
+			};
 		})
-		// 提交
-		$('.submit').click(() => {
+		$('.submit').click(()=>{
 			// console.log($('.form').serialize())
 			if ($('input[name=name]').val().trim() == '') {
 				fade('请输入用户名！')
-			} else if ($('input[name=name]').val().match(/[<'">]/g)) {
+			}else if($('input[name=name]').val().match(/[<'">]/g)){
 				fade('请输入合法字符！')
-			} else if ($('#avatorVal').val() == '') {
+			}else if($('#avatorVal').val() == ''){
 				fade('请上传头像！')
-			} else {
+			}else{
 				$.ajax({
 					url: "/signup",
 					data: {
@@ -75,25 +72,25 @@
 					cache: false,
 					dataType: 'json',
 					success: function (msg) {
-						if (msg.data == 1) {
-							$('input').val('')
-							fade('用户名存在')
-						}
-						else if (msg.data == 2) {
-							fade('请输入重复的密码')
-						}
-						else if (msg.data == 3) {
+					   if (msg.data == 1) {           		
+						   $('input').val('')
+						   fade('用户名存在')
+					   }
+					   else if (msg.data == 2){
+							fade('请输入重复的密码')	               		
+					   }
+					   else if(msg.data == 3){
 							fade('注册成功')
-							setTimeout(() => {
-								window.location.href = "/signin"
-							}, 1000)
-						}
+							setTimeout(()=>{
+								window.location.href="/signin"	  
+							},1000)
+					   	}
 					},
 					error: function () {
 						alert('异常');
-
+	
 					}
-				})
+				})			
 			}
 		})		
 	</script>
