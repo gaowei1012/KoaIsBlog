@@ -75,6 +75,53 @@ router.post('/posts/self/page', async(ctx, next) => {
             }).catch(()=>{
             ctx.body = 'error'
         })  
+});
+
+// 发表文章页
+router.get('/create', async(ctx, next) => {
+    await ctx.render('create', {
+        session: ctx.session,
+    })
+});
+
+// post 发表文章
+router.post('/create', async (ctx, next) => {
+    let title = ctx.request.body.title,
+        content = ctx.request.body.content,
+        id = ctx.session.id,
+        name = ctx.session.user,
+        time = moment().format('YYYY-MM-DD HH:mm:ss'),
+        avator,
+
+        newContent = content.replace(/[<">']/g, (target) => { 
+            return {
+                '<': '&lt;',
+                '"': '&quot;',
+                '>': '&gt;',
+                "'": '&#39;'
+            }[target]
+        }),
+        newTitle = title.replace(/[<">']/g, (target) => {
+            return {
+                '<': '&lt;',
+                '"': '&quot;',
+                '>': '&gt;',
+                "'": '&#39;'
+            }[target]
+        });
+    
+        await userModel.findUserData(ctx.session.user)
+            .then(res => {
+                console.log(res[0]['avator'])
+                avator = res[0]['avator']       
+        })
+        await userModel.insertPost([name, newTitle, md.render(content), content, id, time,avator])
+            .then(() => {
+                ctx.body = true
+            }).catch(() => {
+                ctx.body = false
+            })    
+
 })
 
 module.exports = router
