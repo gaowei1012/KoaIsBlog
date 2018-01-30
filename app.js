@@ -46,6 +46,7 @@ app.use(bodyParser({
 // 路由配置
 app.use(require('./routes/signin.js').routes());
 app.use(require('./routes/signup.js').routes());
+app.use(require('./routes/posts.js').routes());
 
 app.listen(config.port, () => {
     console.log('SUCCESS')
