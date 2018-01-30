@@ -2,15 +2,15 @@
 	<div class="container">
 		<form class="form create" method="post">
 			<div>
-				<label>用户名：</label> 
+				<label>用户名：</label>
 				<input placeholder="请输入用户名" type="text" name="name">
 			</div>
 			<div>
-				<label>密码：</label> 
+				<label>密码：</label>
 				<input placeholder="请输入密码" class="password" type="password" name="password">
 			</div>
 			<div>
-				<label>重复密码：</label> 
+				<label>重复密码：</label>
 				<input placeholder="请确认密码" class="repeatpass" type="password" name="repeatpass">
 			</div>
 			<div>
@@ -29,13 +29,13 @@
 			}
 		})
 		$('#avator').change(() => {
-			if (this.files.lenght !=0) {
+			if (this.files.lenght != 0) {
 				var file = this.files[0],
 					reader = new FileReader();
 				if (!reader) {
 					this.value = '';
 					return;
-				} 
+				}
 
 				console.log(file.size);
 				if (file.size >= 1024 * 1024 / 2) {
@@ -51,18 +51,18 @@
 				};
 
 				reader.readAsDataURL(file);
-			} 
+			}
 		})
 
-		$('.submit').click(()=>{
+		$('.submit').click(() => {
 			// console.log($('.form').serialize())
 			if ($('input[name=name]').val().trim() == '') {
 				fade('请输入用户名！')
-			}else if($('input[name=name]').val().match(/[<'">]/g)){
+			} else if ($('input[name=name]').val().match(/[<'">]/g)) {
 				fade('请输入合法字符！')
-			}else if($('#avatorVal').val() == ''){
+			} else if ($('#avatorVal').val() == '') {
 				fade('请上传头像！')
-			}else{
+			} else {
 				$.ajax({
 					url: "/signup",
 					data: {
@@ -75,25 +75,26 @@
 					cache: false,
 					dataType: 'json',
 					success: function (msg) {
-					   if (msg.data == 1) {           		
-						   $('input').val('')
-						   fade('用户名存在')
-					   }
-					   else if (msg.data == 2){
-							fade('请输入重复的密码')	               		
-					   }
-					   else if(msg.data == 3){
+						if (msg.data == 1) {
+							$('input').val('')
+							fade('用户名存在')
+						}
+						else if (msg.data == 2) {
+							fade('请输入重复的密码')
+						}
+						else if (msg.data == 3) {
 							fade('注册成功')
-							setTimeout(()=>{
-								window.location.href="/signin"	  
-							},1000)
-					   	}
+							setTimeout(() => {
+								window.location.href = "/signin"
+							}, 1000)
+						}
 					},
 					error: function () {
 						alert('异常');
-	
+
 					}
-				})			
+				})
 			}
 		})		
 	</script>
+<% include footer %>
